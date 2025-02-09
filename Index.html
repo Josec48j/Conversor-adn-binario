@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz San Valentín 2025</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: red;
+            font-size: 24px;
+        }
+        h2 {
+            font-size: 18px;
+        }
+        textarea {
+            width: 80%;
+            height: 80px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        #outputTextBinary, #outputBinaryDNA {
+            margin-top: 15px;
+            font-weight: bold;
+            color: green;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+        #errorTextBinary, #errorBinaryDNA {
+            color: red;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .content-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .images {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+        .images img {
+            width: 30%;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .message {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .audio-container {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Feliz San Valentín 2025, para Mi Señorita T, Mi Guindilla Pequeñica, Mi Pedazo de Novia!</h1>
+    
+    <h2>Texto ↔ Binario</h2>
+    <textarea id="inputTextBinary" placeholder="Introduce texto o binario..."></textarea>
+    <br>
+    <button onclick="convertTextBinary()">Texto ↔ Binario</button>
+    <p id="outputTextBinary"></p>
+    <p id="errorTextBinary"></p>
+    
+    <h2>Binario ↔ ADN</h2>
+    <textarea id="inputBinaryDNA" placeholder="Introduce binario o ADN..."></textarea>
+    <br>
+    <button onclick="convertBinaryDNA()">Binario ↔ ADN</button>
+    <p id="outputBinaryDNA"></p>
+    <p id="errorBinaryDNA"></p>
+    
+    <div class="content-container">
+        <div class="images">
+            <img src="Imagen de WhatsApp 2025-02-09 a las 17.45.39_a114e766.jpg" alt="Foto 1">
+            <img src="Imagen de WhatsApp 2025-02-09 a las 17.46.08_2bd8249f.jpg" alt="Foto 2">
+        </div>
+        <div class="audio-container">
+            <audio controls autoplay loop>
+                <source src="piano.mp3" type="audio/mpeg">
+                Tu navegador no soporta el elemento de audio.
+            </audio>
+        </div>
+    </div>
+    
+    <p class="message">Por todos estos momentos y los que quedan por venir. Te quiero mil!!!!!, JoseC</p>
+    
+    <script>
+        function convertTextBinary() {
+            let input = document.getElementById("inputTextBinary").value;
+            let output = "";
+            document.getElementById("errorTextBinary").innerText = "";
+
+            if (/^[01 ]+$/.test(input)) {
+                // Convertir de Binario a Texto
+                let binaryString = input.replace(/\s/g, "");
+                if (binaryString.length % 8 !== 0) {
+                    document.getElementById("errorTextBinary").innerText = "Error: El binario debe estar en bloques de 8 bits.";
+                    return;
+                }
+                try {
+                    for (let i = 0; i < binaryString.length; i += 8) {
+                        let byte = binaryString.substr(i, 8);
+                        output += String.fromCharCode(parseInt(byte, 2));
+                    }
+                } catch (error) {
+                    document.getElementById("errorTextBinary").innerText = "Error: Binario inválido.";
+                    return;
+                }
+            } else {
+                // Convertir de Texto a Binario
+                for (let i = 0; i < input.length; i++) {
+                    output += input[i].charCodeAt(0).toString(2).padStart(8, '0') + " ";
+                }
+            }
+            document.getElementById("outputTextBinary").innerText = output.trim();
+        }
+        
+        function convertBinaryDNA() {
+            let input = document.getElementById("inputBinaryDNA").value.replace(/\s/g, "");
+            let output = "";
+            document.getElementById("errorBinaryDNA").innerText = "";
+            let binaryToDNA = { "00": "A", "01": "T", "10": "C", "11": "G" };
+            let dnaToBinary = { "A": "00", "T": "01", "C": "10", "G": "11" };
+            
+            if (/^[ATCG]+$/.test(input)) {
+                // Convertir de ADN a Binario
+                for (let i = 0; i < input.length; i++) {
+                    output += dnaToBinary[input[i]] + " ";
+                }
+            } else if (/^[01]+$/.test(input) && input.length % 2 === 0) {
+                // Convertir de Binario a ADN
+                for (let i = 0; i < input.length; i += 2) {
+                    output += binaryToDNA[input.substr(i, 2)];
+                }
+            } else {
+                document.getElementById("errorBinaryDNA").innerText = "Error: Entrada no válida. Introduce solo ADN (A, T, C, G) o binario en pares.";
+                return;
+            }
+            document.getElementById("outputBinaryDNA").innerText = output.trim();
+        }
+    </script>
+</body>
+</html>
